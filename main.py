@@ -1,36 +1,24 @@
-from PIL import Image
+Load the original image
+
+from image_utils import load_image
+image = load_image("your_image.jpg")
+
+
+Suppress noise using median filter
+
 from skimage.filters import median
 from skimage.morphology import ball
-import numpy as np
-import cv2
-import matplotlib.pyplot as plt
-
-def load_image(file_path):
-    img = Image.open(file_path).convert("RGB")  # ensure color image
-    return np.array(img)
+clean_image = median(image, ball(3))  # or another value
 
 
+Detect edges
+
+from image_utils import edge_detection
+edgeMAG = edge_detection(clean_image)
 
 
+Save the edge-detected image
 
-
-def edge_detection(image_array):
-    kernelx = np.array([[-1,  0,  1],
-                        [-2,  0,  2],
-                        [-1,  0,  1]])
-    
-    kernely = np.array([[ 1,  2,  1],
-                        [ 0,  0,  0],
-                        [-1, -2, -1]])
-
-    gray = image_array.astype(np.float64)
-    gx = cv2.filter2D(gray, cv2.CV_64F, kernelx)
-    gy = cv2.filter2D(gray, cv2.CV_64F, kernely)
-    edges = np.sqrt(gx**2 + gy**2)
-    edges = (edges / edges.max()) * 255
-    edges = edges.astype(np.uint8)
-
-    plt.imshow(edges, cmap="gray")
-    plt.axis("off")
-    plt.show()
-
+from PIL import Image
+edge_image = Image.fromarray(edgeMAG)
+edge_image.save("edge_image.png")
