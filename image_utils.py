@@ -1,27 +1,33 @@
+
 import numpy as np
-from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
 
 def load_image(file_path):
     """
-    Load a color image from a file path and return it as a NumPy array.
+    Load a color image from a file path and return it as a NumPy array (uint8, 0-255)
     """
+    from PIL import Image
     img = Image.open(file_path).convert("RGB")
-    return np.array(img)
+    return np.array(img, dtype=np.uint8)
 
 def edge_detection(image_array):
     """
-    Perform Sobel edge detection on a NumPy array image (grayscale or RGB).
-    Returns the edge magnitude array.
+    Perform Sobel edge detection on a NumPy array image.
+    Works with grayscale (2D) or RGB (3D) images.
+    Works with float images (0-1) or uint8 images (0-255).
+    
+    Returns: 2D edge magnitude array (uint8, 0-255)
     """
-    # Convert to grayscale if the image is RGB
+    # Convert RGB to grayscale if needed
     if len(image_array.shape) == 3 and image_array.shape[2] == 3:
-        gray = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
-    else:
-        gray = image_array.copy()
+        image_array = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
 
-    gray = gray.astype(np.float64)
+    # Convert float 0-1 to 0-255 uint8 if needed
+    if image_array.dtype in [np.float32, np.float64]:
+        image_array = (image_array * 255).astype(np.uint8)
+
+    gray = image_array.astype(np.float64)
 
     # Sobel kernels
     kernelx = np.array([[-1,  0,  1],
@@ -38,10 +44,12 @@ def edge_detection(image_array):
 
     # Compute edge magnitude
     edges = np.sqrt(gx**2 + gy**2)
+
+    # Normalize to 0-255
     edges = (edges / edges.max()) * 255
     edges = edges.astype(np.uint8)
 
-    # Display edges (optional)
+    # Display the edges (optional)
     plt.imshow(edges, cmap="gray")
     plt.axis("off")
     plt.show()
