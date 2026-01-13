@@ -5,6 +5,14 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
+def load_image(file_path):
+    img = Image.open(file_path).convert("RGB")  # ensure color image
+    return np.array(img)
+
+
+
+
+
 
 def edge_detection(image_array):
     kernelx = np.array([[-1,  0,  1],
