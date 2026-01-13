@@ -5,7 +5,7 @@ from skimage.color import rgb2gray
 from PIL import Image
 
 # 1. Load original image
-original_image = load_image("your_image.jpg")
+original_image = load_image("cow aerodynamics.jpg")
 
 # 2. Convert to grayscale
 gray_image = rgb2gray(original_image)  # returns float 0-1
