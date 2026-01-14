@@ -17,7 +17,7 @@ def edge_detection(image):
                         [ 0,  0,  0],
                         [-1, -2, -1]])
 
-    edgex = convolve2d(gray,kernelx, mode='same')
-    edgey = convolve2d(gray,kernely, mode='same')
+    edgex = convolve2d(grey,kernelx, mode='same')
+    edgey = convolve2d(grey,kernely, mode='same')
     edgeMAX = np.sqrt(edgex**2 + edgey**2)
     return edgeMAX
