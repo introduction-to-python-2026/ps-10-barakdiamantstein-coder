@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 # 1️⃣ Load original color image
-original_image = load_image('coes aerodynamics.jpg') 
+original_image = load_image('cow aerodynamics.jpg') 
 
 # 2️⃣ Apply median filter for noise suppression
 # Median expects a grayscale image or single channel; convert RGB to grayscale first
